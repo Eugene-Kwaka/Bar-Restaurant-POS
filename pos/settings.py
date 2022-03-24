@@ -1,6 +1,6 @@
 import os
 import environ
-import django_heroku
+#import django_heroku
 from pathlib import Path
 
  # reading .env file
@@ -24,7 +24,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['142.93.43.221']
 
 
 # Application definition
@@ -146,4 +146,4 @@ LOGIN_URL = '/login'
 
 # new
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
