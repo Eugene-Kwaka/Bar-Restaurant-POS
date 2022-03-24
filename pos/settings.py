@@ -24,7 +24,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['142.93.43.221', '127.0.0.1', 'bar-restaurant-pos.herokuapp']
+ALLOWED_HOSTS = ['142.93.43.221']
 
 
 # Application definition
