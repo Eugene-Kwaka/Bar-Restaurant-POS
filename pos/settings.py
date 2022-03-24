@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'pos.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': BASE_DIR / 'db.sqlite',
+        'NAME': 'db.sqlite',
         # 'ENGINE': 'django.db.backends.postgresql',
         # 'NAME': env('DATABASE_NAME'),
         # 'USER': env('DATABASE_USER'),
