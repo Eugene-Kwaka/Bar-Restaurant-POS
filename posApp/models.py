@@ -44,6 +44,8 @@ class Products(models.Model):
     status = models.IntegerField(default=1) 
     date_added = models.DateTimeField(default=timezone.now) 
     date_updated = models.DateTimeField(auto_now=True) 
+    quantity = models.IntegerField(default='0', null=True)
+    #qty = models.ForeignKey(salesItems, default=0)
 
     def __str__(self):
         return self.code + " - " + self.name
@@ -68,6 +70,8 @@ class salesItems(models.Model):
     price = models.FloatField(default=0)
     qty = models.FloatField(default=0)
     total = models.FloatField(default=0)
+    
+    #rem_quantity = models.ForeignKey(Products, default='0', null=True, on_delete=models.SET_DEFAULT, related_name="quantity")
 
     def __str__(self):
         return self.product_id

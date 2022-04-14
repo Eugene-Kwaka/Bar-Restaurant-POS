@@ -164,6 +164,7 @@ def save_product(request):
     data =  request.POST
     resp = {'status':'failed'}
     id= ''
+    #
     if 'id' in data:
         id = data['id']
     if id.isnumeric() and int(id) > 0:
@@ -176,9 +177,9 @@ def save_product(request):
         category = Category.objects.filter(id = data['category_id']).first()
         try:
             if (data['id']).isnumeric() and int(data['id']) > 0 :
-                save_product = Products.objects.filter(id = data['id']).update(code=data['code'], category_id=category, name=data['name'], description = data['description'], price = float(data['price']),status = data['status'])
+                save_product = Products.objects.filter(id = data['id']).update(code=data['code'], category_id=category, name=data['name'], description = data['description'], quantity = int(data['quantity']), price = float(data['price']), status = data['status'])
             else:
-                save_product = Products(code=data['code'], category_id=category, name=data['name'], description = data['description'], price = float(data['price']),status = data['status'])
+                save_product = Products(code=data['code'], category_id=category, name=data['name'], description = data['description'], quantity = int(data['quantity']), price = float(data['price']),status = data['status'])
                 save_product.save()
             resp['status'] = 'success'
             messages.success(request, 'Product Successfully saved.')
@@ -234,7 +235,6 @@ def save_pos(request):
         if len(check) <= 0:
             break
     code = str(pref) + str(code)
-
     try:
         sales = Sales(code=code, sub_total = data['sub_total'], tax = data['tax'], tax_amount = data['tax_amount'], grand_total = data['grand_total'], tendered_amount = data['tendered_amount'], amount_change = data['amount_change']).save()
         sale_id = Sales.objects.last().pk
@@ -246,6 +246,7 @@ def save_pos(request):
             qty = data.getlist('qty[]')[i] 
             price = data.getlist('price[]')[i] 
             total = float(qty) * float(price)
+            product.quantity -= float(qty)
             print({'sale_id' : sale, 'product_id' : product, 'qty' : qty, 'price' : price, 'total' : total})
             salesItems(sale_id = sale, product_id = product, qty = qty, price = price, total = total).save()
             i += int(1)
