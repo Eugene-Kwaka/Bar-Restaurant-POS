@@ -4,6 +4,8 @@ from django.contrib.auth import views as auth_views
 from django.urls import path
 from django.views.generic.base import RedirectView
 
+from django.views.decorators.csrf import csrf_exempt
+
 urlpatterns = [
     path('redirect-admin', RedirectView.as_view(url="/admin"),name="redirect-admin"),
     path('', views.home, name="home-page"),
@@ -25,6 +27,7 @@ urlpatterns = [
     path('sales', views.salesList, name="sales-page"),
     path('receipt', views.receipt, name="receipt-modal"),
     path('delete_sale', views.delete_sale, name="delete-sale"),
+    path('search-sales', csrf_exempt(views.search_sales), name="search_sales")
     # path('employees', views.employees, name="employee-page"),
     # path('manage_employees', views.manage_employees, name="manage_employees-page"),
     # path('save_employee', views.save_employee, name="save-employee-page"),

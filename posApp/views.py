@@ -9,7 +9,22 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 import json, sys
+from django.http import JsonResponse
 from datetime import date, datetime
+from .forms import *
+from .filters import *
+
+
+
+
+# SEARCH FUNCTIONALITY USING AJAX
+def search_sales(request):
+    if request.method =='POST':
+        search_str = json.loads(request.body).get('searchText')
+        sales = Sales.objects.filter(date_added__istartswith=search_str) | Sales.objects.filter(code__icontains=search_str) 
+        data = sales.values()
+        return JsonResponse(list(data), safe=False)
+
 
 # Login
 def login_user(request):
@@ -261,6 +276,32 @@ def save_pos(request):
 @login_required
 def salesList(request):
     sales = Sales.objects.all()
+    # salesFilter = SalesFilter(request.GET, queryset=sales)
+    # search_sales = SalesFilter.qs
+    # form = SalesSearchForm(request.POST or None)
+    # if request.method == 'POST':
+    #     #category = form['category'].value()
+    #     items = Sales.objects.filter(
+    #         code__icontains=form['code'].value(),
+    #         # Filters through dates
+    #         date_updated__range=[
+    #             form['start_date'].value(), form['end_date'].value()]
+    #     )
+        # If category is not empty
+        # if (category != ''):
+        #     items = items.filter(category_id=category)
+
+    # EXPORT TO CSV
+    # if form['export_to_CSV'].value() == True:
+    #     response = HttpResponse(content_type='text/csv')
+    #     response['Content-Disposition'] = 'attachment; filename="List of stock items.csv"'
+    #     writer = csv.writer(response)
+    #     writer.writerow(['SALES_CODE', 'ITEM NAME', 'QUANTITY'])
+    #     # for each item in the stock list in the CSV this loop will run and write the item details
+    #     for stock in items:
+    #         writer.writerow([stock.category, stock.item_name, stock.quantity])
+    #     return response
+
     sale_data = []
     for sale in sales:
         data = {}
@@ -274,9 +315,14 @@ def salesList(request):
         # print(data)
         sale_data.append(data)
     # print(sale_data)
+    # sale_data = sales
+    # salesFilter = SalesFilter(request.GET, queryset=sales)
+    # sales = SalesFilter.qs
     context = {
         'page_title':'Sales Transactions',
         'sale_data':sale_data,
+        # 'salesFilter':salesFilter,
+        # 'sales':sales,
     }
     # return HttpResponse('')
     return render(request, 'posApp/sales.html',context)
