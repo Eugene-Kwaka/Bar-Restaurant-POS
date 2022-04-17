@@ -50,13 +50,17 @@ class Products(models.Model):
     date_added = models.DateTimeField(auto_now_add=True) 
     date_updated = models.DateTimeField(auto_now=True) 
     quantity = models.IntegerField(default='0', null=True)
-    #qty = models.ForeignKey(salesItems, default=0)
 
     def __str__(self):
         return self.code + " - " + self.name
 
+
+    class Meta:
+        verbose_name = "Product"
+        # The model will have this name in the admin page
+        verbose_name_plural = "Products"
+
 class Sales(models.Model):
-    #product_id = models.ForeignKey(Products,on_delete=models.CASCADE)
     code = models.CharField(max_length=100)
     sub_total = models.FloatField(default=0)
     grand_total = models.FloatField(default=0)
@@ -69,7 +73,7 @@ class Sales(models.Model):
     
 
     def __str__(self):
-        return self.product_id
+        return self.code
 
     class Meta:
         verbose_name = "Sales"
@@ -83,8 +87,6 @@ class salesItems(models.Model):
     qty = models.FloatField(default=0)
     total = models.FloatField(default=0)
     
-    #rem_quantity = models.ForeignKey(Products, default='0', null=True, on_delete=models.SET_DEFAULT, related_name="quantity")
-
     def __str__(self):
         return self.product_id
 

@@ -250,6 +250,7 @@ def save_pos(request):
         if len(check) <= 0:
             break
     code = str(pref) + str(code)
+    
     try:
         sales = Sales(code=code, sub_total = data['sub_total'], tax = data['tax'], tax_amount = data['tax_amount'], grand_total = data['grand_total'], tendered_amount = data['tendered_amount'], amount_change = data['amount_change']).save()
         sale_id = Sales.objects.last().pk
@@ -261,7 +262,6 @@ def save_pos(request):
             qty = data.getlist('qty[]')[i] 
             price = data.getlist('price[]')[i] 
             total = float(qty) * float(price)
-            product.quantity -= float(qty)
             print({'sale_id' : sale, 'product_id' : product, 'qty' : qty, 'price' : price, 'total' : total})
             salesItems(sale_id = sale, product_id = product, qty = qty, price = price, total = total).save()
             i += int(1)
@@ -292,8 +292,6 @@ def salesList(request):
     context = {
         'page_title':'Sales Transactions',
         'sale_data':sale_data,
-        # 'salesFilter':salesFilter,
-        #  'sales':sales,
     }
     # return HttpResponse('')
     return render(request, 'posApp/sales.html',context)
